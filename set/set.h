@@ -12,9 +12,9 @@ public:
 		Set();								 //default
 		Set(const Set<T> &);				 //copy
 		Set(Set<T> &&);						 //move
-		Set(const std::initializer_list<T>); //initializer_list	 -->> SIZE???
+		Set(std::initializer_list<T>); //initializer_list	 -->> SIZE???
 		Set(const Array<T> &); //makes a Set from an Array (remove all clones)
-		Set(const std::array<T> &); //The same, from std::array
+		Set(const std::array<T> &); ///The same, from std::array <<----- array<T,N>
 		//����������� ��������???????
 
 		~Set(); //Virtual?????
@@ -27,19 +27,19 @@ public:
 		//Changes the Set.
 			//Add an element. 
 		bool Add(const T&); //+=
-		bool operator += (Set<T> &, const T&);  // return Set<T> &  ??????
+		bool operator += (const T&);  // return Set<T> &  ??????
 		
 			//Del an element by value
 		bool Del(const T&); //-=
-		bool operator -= (Set<T> &, const T&);
+		bool operator -= (const T&);
 		
 			//Extends the Set with another Set 
 		bool extend(const Set<T> &); // (union)
-		bool operator += (Set<T> &, const Set<T> &);
+		bool operator += (const Set<T> &);
 		
 			//Subtract another Set from the Set
 		bool subtract(const Set<T> &); // (difference)  
-		bool operator -= (Set<T> &, const Set<T> &);
+		bool operator -= (const Set<T> &);
 		
 			//Intersection
 		//	^=
@@ -57,42 +57,40 @@ public:
 		
 			// =
 		Set<T> & operator = (const Set<T> &);
-		Set<T> & operator = (const initializer_list<T>); //  ..._list<T> &);???
+		Set<T> & operator = (initializer_list<T>); //  ..._list<T> &);???
 		Set<T> & operator = (const std:array<T> &);
 		Set<T> & operator = (const Array<T> &);
 
 			//Union
-		Set<T> & union (const T&) const;
-		Set<T> & operator + (const T&, const T&);
-		Set<T> & union (const Set<T> &) const;
-		Set<T> & operator + (const Set<T> &, const Set<T>&);
+		Set<T> & merge (const T&) const;		
+		Set<T> & operator + (const T&);
+		Set<T> & merge (const Set<T> &) const; 
+		Set<T> & operator + (const Set<T>&);
 		
 			//Intersection
-		Set<T> & intersection (const T&) const;	//return is_contains(T&) ?  {T} : nullptr
+		Set<T> & intersection (const T&) const;	
 		Set<T> & intersection (const Set<T>&) const;
-		Set<T> & operator ^ (const Set<T>, const Set<T>);
+		Set<T> & operator ^ (const Set<T>);
 		
 			//Difference
 		Set<T> & left_difference(const Set<T> & B) const; // A \ B
-		Set<T> & operator - (const Set<T> & A, const Set<T> & B);
-		
-		Set<T> & right_difference(const Set<T> & B) const; // B \ A
-		
+		Set<T> & operator - (const Set<T> & B);
+
 		
 		size_t size() const;
 		void clear();
 		
 		const bool is_equal(const Set<T> &) const;
-		const bool operator == (const Set<T> &, const Set<T> &);
-		const bool operator != (const Set<T> &, const Set<T> &);
-		const bool operator < (const Set<T> &, const Set<T> &);
-		const bool operator > (const Set<T> &, const Set<T> &);
+		const bool operator == (const Set<T> &);
+		const bool operator != (const Set<T> &);
 		
 		//bool is_subset(const T&) const;	//
-		const bool is_subset(const Set<T> &) const;
+		const bool is_subset(const Set<T> &A) const;		// is *this in A ? 1 : 0
+		const bool operator < (const Set<T> &);
 		
-		const bool is_contains(const T&) const;
-		const bool is_contains(const Set<T> &) const;
+		const bool is_contains(const T& B) const;			// is B in *this ? 1 : 0
+		const bool is_contains(const Set<T> & B) const;		
+		const bool operator > (const Set<T> &);				// the same/ *this include B ?
 		
 	
 private:
